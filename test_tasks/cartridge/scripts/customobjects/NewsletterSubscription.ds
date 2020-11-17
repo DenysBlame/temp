@@ -2,13 +2,18 @@
 /**
  * @module customobjects/NewsletterSubscription
  */
+
 var CustomObjectMgr = require('dw/object/CustomObjectMgr');
 
-exports.createObject = function(newsletterForm) {
-  var co = CustomObjectMgr.createCustomObject('NewsletterSubscription', newsletterForm.getValue('email'));
+exports.createCustomObject = function(email) {
+    return CustomObjectMgr.createCustomObject('NewsletterSubscription', email);
+};
 
-  co.custom.firstName = newsletterForm.getValue('fname');
-  co.custom.lastName = newsletterForm.getValue('lname');
-  
-  return co;
+exports.createObjectByForm = function(newsletterForm) {
+    var co = this.createCustomObject(newsletterForm.getValue('email'));
+
+    co.custom.firstName = newsletterForm.getValue('fname');
+    co.custom.lastName = newsletterForm.getValue('lname');
+
+    return co;
 };
