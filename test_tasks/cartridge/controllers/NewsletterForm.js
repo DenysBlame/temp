@@ -1,7 +1,7 @@
 'use strict';
 
 /**
-* Description of the Controller and the logic it provides
+* Сontroller contains the logic for subscribing on email newsletters
 *
 * @module  controllers/NewsletterForm
 */
@@ -22,16 +22,32 @@ function HandleForm() {
 
     currentForm.handleAction({
         subscribe: function () {
+            var CustomObjectMgr = require('dw/object/CustomObjectMgr');
+            var email = currentForm.getValue('email');
+            var result;
+
             try {
-                dw.system.Transaction.wrap(function () {
-                    require('~/cartridge/scripts/customobjects/NewsletterSubscription').createObjectByForm(currentForm);
+                result = dw.system.Transaction.wrap(function () {
+                    if (CustomObjectMgr.getCustomObject('NewsletterSubscription', email)) {
+                        return false;
+                    }
+                	currentForm.copyTo(
+                        require('dw/object/CustomObjectMgr').createCustomObject('NewsletterSubscription', email)
+                    );
+                    return true;
+                    //return require('~/cartridge/scripts/customobjects/NewsletterSubscription').createObjectByForm(currentForm);
                 });
+            } catch (error) {
+                require('dw/system/Logger').getLogger('test').debug('Error occurred in sing up form with email {0}', email);
+                return app.getView().render('newsletter/newslettererror');
+            }
+
+            if (result) {
                 app.getView({
                     CurrentForms: session.forms
                 }).render('newsletter/newslettersuccess');
-    
                 currentForm.clearFormElement(); 
-            } catch (error) {
+            } else {
             	currentForm.get('email').invalidateFormElement();
                 response.redirect(URLUtils.https('NewsletterForm-Start'));
             }

@@ -7,6 +7,8 @@
 			pdict.CurrentForms.newsletter.fname.value,  
 			pdict.CurrentForms.newsletter.lname.value )}
 	</h3>
-	</h3>
-		${Resource.msg('global.backto', 'locale', null)} <a href="${URLUtils.url('NewsletterForm-Start')}">${Resource.msg('global.newslettersubscription', 'locale', null)}</a>
+	${Resource.msg('global.backto', 'locale', null)} 
+	<a href="${URLUtils.url('NewsletterForm-Start')}">
+		${Resource.msg('global.newslettersubscription', 'locale', null)}
+	</a>
 </isdecorate>

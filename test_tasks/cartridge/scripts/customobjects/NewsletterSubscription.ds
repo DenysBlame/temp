@@ -6,14 +6,19 @@
 var CustomObjectMgr = require('dw/object/CustomObjectMgr');
 
 exports.createCustomObject = function(email) {
+    if (CustomObjectMgr.getCustomObject('NewsletterSubscription', email)) {
+        return false;
+    }
     return CustomObjectMgr.createCustomObject('NewsletterSubscription', email);
 };
 
 exports.createObjectByForm = function(newsletterForm) {
-    var co = this.createCustomObject(newsletterForm.getValue('email'));
+    var newSubObj = this.createCustomObject(newsletterForm.getValue('email'));
+    
+    if (newSubObj) {
+        newSubObj.custom.firstName = newsletterForm.getValue('fname');
+        newSubObj.custom.lastName = newsletterForm.getValue('lname');
+    }
 
-    co.custom.firstName = newsletterForm.getValue('fname');
-    co.custom.lastName = newsletterForm.getValue('lname');
-
-    return co;
+    return newSubObj;
 };
