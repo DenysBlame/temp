@@ -1,0 +1,33 @@
+'use strict';
+
+/**
+ * Geocoding service for get city info by city name
+ * @module services/geocoding
+ */
+
+var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
+
+var API_KEY = 'rad9CE0LF6j9WYnJBlSLvIqyPT2KowyM';
+
+exports.getService = function() {
+    var baseURL;
+
+    return LocalServiceRegistry.createService('test_tasks.http.geocode.get', {
+        createRequest: function(svc, query) {
+            if (!baseURL) {
+                baseURL = svc.getURL();
+                svc.setRequestMethod('GET');
+                svc.addParam('key', API_KEY);
+                svc.addParam('typeahead', true);
+            }
+            svc.setURL(baseURL + encodeURI(query) + '.json');
+        },
+        parseResponse: function(svc, response) {
+            response = JSON.parse(response.text);
+            if (response.results.length) {
+                return response.results[0];
+            }
+            return false;
+        }
+    });
+}

@@ -9,9 +9,10 @@
 var app = require('*/cartridge/scripts/app');
 var guard = require('storefront_controllers/cartridge/scripts/guard');
 var CustomObjectMgr = require('dw/object/CustomObjectMgr');
+var Geocoding = require('~/cartridge/scripts/services/geocoding');
 
 function Start() {
-    var GeocodingService = getService();
+    var GeocodingService = Geocoding.getService();
     var citiesCount = 0;
     var updatedCities = [];
 
@@ -38,7 +39,6 @@ function Start() {
             } catch (error) {}
         }
     }
-    cityIterator.close();
 
     app.getView({
         cities: { 
@@ -52,27 +52,7 @@ function Start() {
 }
 
 
-function getService() {
-    var baseURL;
-    return dw.svc.LocalServiceRegistry.createService('test_tasks.http.geocode.get', {
-        createRequest: function(svc, query) {
-            if (!baseURL) {
-                baseURL = svc.getURL();
-                svc.setRequestMethod('GET');
-                svc.addParam('key', 'rad9CE0LF6j9WYnJBlSLvIqyPT2KowyM');
-                svc.addParam('typeahead', true);
-            }
-            svc.setURL(baseURL + encodeURI(query) + '.json');
-        },
-        parseResponse : function(svc, response) {
-            response = JSON.parse(response.text);
-            if (response.results.length) {
-                return response.results[0];
-            }
-            return false;
-        }
-    });
-}
+
 
 
 /* Web exposed methods */
