@@ -1,0 +1,15 @@
+<h1>
+    ${Resource.msg('global.geocoding.h1', 'locale', null)}
+</h1>
+
+<hr><br/>
+
+<h2>
+    ${Resource.msgf('global.geocoding.statistic', 'locale', null, pdict.cities.count.updated, pdict.cities.count.all)}
+</h2>
+
+<br/><hr><br/><br/>
+
+<pre>
+    ${pdict.cities.updated}
+</pre>
