@@ -1,0 +1,14 @@
+<isdecorate template="account/pt_account">
+	${Resource.msg('global.hellosuccess', 'locale', null)} ${pdict.CurrentForms.newsletter.fname.value}
+	<h3>
+		${Resource.msgf('global.newsletterthanks',
+			'locale', 
+			null, 
+			pdict.CurrentForms.newsletter.fname.value,  
+			pdict.CurrentForms.newsletter.lname.value )}
+	</h3>
+	${Resource.msg('global.backto', 'locale', null)} 
+	<a href="${URLUtils.url('NewsletterForm-Start')}">
+		${Resource.msg('global.newslettersubscription', 'locale', null)}
+	</a>
+</isdecorate>

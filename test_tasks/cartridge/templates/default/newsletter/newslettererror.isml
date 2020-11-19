@@ -1,0 +1,7 @@
+<isdecorate template="account/pt_account">
+    <h4>${Resource.msg('global.newslettererror', 'locale', null)}</h4>
+    ${Resource.msg('global.backto', 'locale', null)}
+    <a href="${URLUtils.url('NewsletterForm-Start')}">
+        ${Resource.msg('global.newslettersubscription', 'locale', null)}
+    </a>.
+</isdecorate>
