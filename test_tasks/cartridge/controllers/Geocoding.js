@@ -38,6 +38,7 @@ function Start() {
             } catch (error) {}
         }
     }
+    cityIterator.close();
 
     app.getView({
         cities: { 
