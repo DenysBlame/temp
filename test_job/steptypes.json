@@ -1,0 +1,40 @@
+{
+  "step-types": {
+    "script-module-step": [
+      {
+        "@type-id": "custom.updateAllCities",
+        "@supports-parallel-execution": "true",
+        "@supports-site-context": "true",
+        "@supports-organization-context": "false",
+        "description": "Custom script for updateAllCities",
+        "module": "test_job/cartridge/scripts/steps/job.ds",
+        "function": "executeJob",
+        "transactional": "true",
+        "timeout-in-seconds": "900",
+        "parameters": {
+          "parameter": [
+            {
+              "@name": "UpdateCities",
+              "@type": "double",
+              "@required": "false",
+              "description": "How many cities needs to be updated? (if empty then all will be updated)",
+              "min-value": 1
+            }
+          ]
+        },
+        "status-codes": {
+          "status": [
+            {
+              "@code": "ERROR",
+              "description": "Used when the step failed with an error."
+            },
+            {
+              "@code": "FINISHED",
+              "description": "Used when the step finished successfully."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

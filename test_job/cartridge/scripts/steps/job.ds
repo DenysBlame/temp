@@ -1,0 +1,54 @@
+'use strict';
+
+/**
+ * Custom script for updateAllCities job
+ * @module steps/job
+ */
+
+var CustomObjectMgr = require('dw/object/CustomObjectMgr');
+var Geocoding = require('test_tasks/cartridge/scripts/services/geocoding');
+
+exports.executeJob = function(args) {
+    var GeocodingService = Geocoding.getService();
+
+    var cityIterator = CustomObjectMgr.getAllCustomObjects('city');
+
+    var cityCount = parseInt(args.UpdateCities);
+    if (cityCount && !isNaN(cityCount)) {
+        updateCount(GeocodingService, cityIterator, cityCount);
+    } else {
+        updateAll(GeocodingService, cityIterator);
+    }
+};
+
+
+function updateAll(service, iterator) {
+    while (iterator.hasNext()) {
+        updateCity(iterator, service);
+    }
+}
+
+function updateCount(service, iterator, count) {
+    while (count && iterator.hasNext()) {
+        count--;
+        updateCity(iterator, service);
+    }
+    iterator.close();
+}
+
+function updateCity(iterator, service) {
+    var city = iterator.next().custom;
+
+    var result = service.call(city.name);
+    if (result.status == 'OK' && result.object) {
+        try {
+            dw.system.Transaction.wrap(function () {
+                city.latitude = result.object.position.lat;
+                city.longitude = result.object.position.lon;
+                if (result.object.address.postalCode) {
+                    city.zipCode = result.object.address.postalCode;
+                }
+            });
+        } catch (error) {}
+    }
+}
