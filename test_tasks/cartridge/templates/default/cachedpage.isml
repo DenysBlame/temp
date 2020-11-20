@@ -1,0 +1,3 @@
+
+<iscache type="relative" minute="30"/>
+<isprint value="${new Date()}" style="DATE_TIME"/>
